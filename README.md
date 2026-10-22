@@ -1,4 +1,4 @@
-# Marlo Finch — portfolio template
+# Dev Sharma — portfolio template
 
 A Next.js rebuild and rebrand of a design-tool-style portfolio: selection frames, sticky notes, multiplayer cursors, rulers, a grid canvas and draggable stickers. All copy, names and images are placeholders for a fictional designer called **Marlo Finch**, so the site can be re-skinned for any client.
 
