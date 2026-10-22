@@ -1,16 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    // Here you would normally send to email service/CRM
-    // For now, just log to console (in production, replace with actual service)
-    console.log('Contact form submission:', body);
+/**
+ * Receives the contact-page note. It validates and acknowledges the message
+ * but does not deliver it anywhere yet — connect your email or CRM provider
+ * (Resend, Postmark, Formspree, a Slack webhook…) where marked below.
+ */
+export async function POST(request: Request) {
+  const body = (await request.json().catch(() => null)) as { message?: unknown; email?: unknown } | null;
+  const message = typeof body?.message === "string" ? body.message.trim() : "";
+  const email = typeof body?.email === "string" ? body.email.trim() : "";
 
-    // Return success response
-    return NextResponse.json({ ok: true, message: 'Form submitted successfully' }, { status: 200 });
-  } catch (error) {
-    console.error('Contact form error:', error);
-    return NextResponse.json({ ok: false, message: 'Submission failed' }, { status: 500 });
+  if (message.length < 3 || message.length > 5000) {
+    return Response.json({ ok: false, error: "Add a short message (up to 5,000 characters)." }, { status: 400 });
   }
+  if (!EMAIL.test(email) || email.length > 254) {
+    return Response.json({ ok: false, error: "That email doesn't look quite right." }, { status: 400 });
+  }
+
+  // Deliver { email, message } with your provider here.
+
+  return Response.json({ ok: true });
 }

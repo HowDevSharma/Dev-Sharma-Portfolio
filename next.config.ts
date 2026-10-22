@@ -1,11 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable hybrid static & server rendering
+  // Enable static export for most pages, keep API routes dynamic
   output: "export",
-  // output: "export"  // Keep disabled - contact form needs server-side functionality
-
-  /* config options here */
+  // Required for static export with App Router
+  distDir: "out",
+  // Ensure assets are correctly referenced
+  assetPrefix: "./",
+  // Optional: add basePath if deploying to subdirectory
+  // basePath: "/your-repo-name",
 };
+
 
 export default nextConfig;
